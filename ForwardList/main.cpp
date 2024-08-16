@@ -46,6 +46,12 @@ public:
 		*this = other; //חהוסü ןנמסעמ גûחûגאול CopyAssignment
 		cout << "LCopyConstructor:\t" << this << endl;
 	}
+	ForwardList(ForwardList&& other)noexcept
+	{
+		this->Head = other.Head;
+		other.Head = nullptr;
+		cout << "MoveConstructor: " << this << endl;
+	}
 	~ForwardList()
 	{
 		//while (Head)pop_front();
@@ -62,6 +68,15 @@ public:
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_back(Temp->Data);
 		cout << "LCopyAssignment:\t" << endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)noexcept
+	{
+		if (this == &other)return *this;
+		delete[] this->Head;
+		this->Head = other.Head;
+		other.Head = nullptr;
+		cout << "MoveAssignment: " << this << endl;
 		return *this;
 	}
 
@@ -290,5 +305,8 @@ void main()
 	ForwardList list2 = list; //CopyConstructor
 	//ForwardList list2;
 	//list2 = list;
-	list2.print();
+	//list2.print();
+	ForwardList list3;
+	list3 = std::move(list2);
+	list3.print();
 }
