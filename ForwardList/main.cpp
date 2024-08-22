@@ -25,14 +25,51 @@ public:
 #endif // DEBUG
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 int Element::count = 0;
+
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp = nullptr) : Temp(Temp)
+	{
+		cout << "ItConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "ItDestructor:\t" << this << endl;
+	}
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+
+	int operator*()
+	{
+		return Temp->Data;
+	}
+};
 
 class ForwardList
 {
 	Element* Head;
 	unsigned int size; 
 public:
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 	ForwardList()
 	{
 		Head = nullptr;
@@ -55,7 +92,7 @@ public:
 		cout << "MoveConstructor: " << this << endl;
 	}
 
-	/*explicit*/ ForwardList(const std::initializer_list<int>& il):ForwardList()
+	ForwardList(const std::initializer_list<int>& il):ForwardList()
 	{
 		//initializer_list - это контейнер.
 		cout << typeid(il.begin()).name() << endl;
@@ -64,6 +101,15 @@ public:
 			push_back(*it);
 		}
 	}
+
+	/*ForwardList* begin()
+	{
+		return &Head;
+	}*/
+	/*ForwardList* end()
+	{
+		return begin() + size;
+	}*/
 
 	~ForwardList()
 	{
@@ -394,5 +440,4 @@ void main()
 	cout << endl;
 #endif // RANGE_BASED_FOR_LIST
 
-	
 }
