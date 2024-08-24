@@ -133,7 +133,8 @@ public:
 	ForwardList& operator=(ForwardList&& other)noexcept
 	{
 		if (this == &other)return *this;
-		delete[] this->Head;
+		//delete[] this->Head;
+		while (Head) pop_front();
 		this->Head = other.Head;
 		this->size = other.size;
 		other.Head = nullptr;
@@ -431,7 +432,7 @@ void main()
 
 #ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3, 5, 8, 13, 21 };
-	list.print();
+	//list.print();
 
 	for (int i : list)
 	{
@@ -439,7 +440,5 @@ void main()
 	}
 	cout << endl;
 #endif // RANGE_BASED_FOR_LIST
-
-
 
 }
