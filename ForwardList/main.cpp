@@ -25,28 +25,28 @@ public:
 #endif // DEBUG
 	}
 	friend class ForwardList;
-	friend class Iterator;
+	friend class ConstIterator;
 };
 int Element::count = 0;
 
-class Iterator
+class ConstIterator
 {
 	Element* Temp;
 public:
-	Iterator(Element* Temp = nullptr) : Temp(Temp)
+	ConstIterator(Element* Temp = nullptr) : Temp(Temp)
 	{
 		cout << "ItConstructor:\t" << this << endl;
 	}
-	~Iterator()
+	~ConstIterator()
 	{
 		cout << "ItDestructor:\t" << this << endl;
 	}
-	Iterator& operator++()
+	ConstIterator& operator++()
 	{
 		Temp = Temp->pNext;
 		return *this;
 	}
-	bool operator!=(const Iterator& other)const
+	bool operator!=(const ConstIterator& other)const
 	{
 		return this->Temp != other.Temp;
 	}
@@ -62,11 +62,11 @@ class ForwardList
 	Element* Head;
 	unsigned int size; 
 public:
-	Iterator begin()
+	ConstIterator begin()
 	{
 		return Head;
 	}
-	Iterator end()
+	ConstIterator end()
 	{
 		return nullptr;
 	}
