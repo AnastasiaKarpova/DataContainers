@@ -222,10 +222,11 @@ public:
 		}
 		else
 		{
-			Element* New = new Element(Data);
+			/*Element* New = new Element(Data);
 			New->pNext = Head;
 			Head->pPrev = New;
-			Head = New;
+			Head = New;*/
+			Head = new Element(Data, Head);
 		}
 		size++;
 	}
@@ -237,10 +238,11 @@ public:
 		}
 		else
 		{
-			Element* New = new Element(Data);
+			/*Element* New = new Element(Data);
 			New->pPrev = Tail;
 			Tail->pNext = New;
-			Tail = New;
+			Tail = New;*/
+			Tail->pPrev = new Element(Data);
 		}
 		size++;
 	}
@@ -314,20 +316,61 @@ public:
 	}
 	void insert(int Data, int index)
 	{
-		if (index < 1 || index > size) return;
-		else if (index == 1) push_front(Data);
-		else if (index == size) push_back(Data);
+		if (index < 0 || index > size) return;
+		if (index == 0) push_front(Data);
+		if (index == size) push_back(Data);
+		Element* Temp;
+		if(index < size/2)
+		{
+			Temp = Head;
+			for (int i = 0; i < index; i++)
+			{
+				Temp = Temp->pNext;
+			}
+		}
 		else
 		{
-
+			Temp = Tail;
+			for (int i = index; i < size - 1; i++)
+			{
+				Temp = Temp->pPrev;
+			}
 		}
+		Element* New = new Element(Data);
+		New->pNext = Temp;
+		New->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = New;
+		Temp->pPrev = New;
+		size++;
 	}
 	void erase(int index)
 	{
-
+		if (index <0 || index > size) return;
+		Element* Temp;
+		if (index < size / 2)
+		{
+			Temp = Head;
+			for (int i = 0; i < index; i++)
+			{
+				Temp = Temp->pNext;
+			}
+		}
+		else
+		{
+			Temp = Tail;
+			for (int i = size - 1; i > index; i--)
+			{
+				Temp = Temp->pPrev;
+			}
+		}
+		Temp->pPrev->pNext = Temp->pNext;
+		if (Temp->pNext != nullptr)
+		{
+			Temp->pNext->pPrev = Temp->pPrev;
+		}
+		delete Temp;
+		size--;
 	}
-
-	
 };
 
 List operator+(const List& left, const List& right)
