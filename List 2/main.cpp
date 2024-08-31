@@ -159,6 +159,16 @@ public:
 		}*/
 
 	};
+	class Iterator :public ConstIterator
+	{
+	public:
+		Iterator(Element* Temp = nullptr) :ConstIterator(Temp) {}
+		~Iterator() {}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
 	ConstIterator begin()const
 	{
 		return Head;
@@ -175,7 +185,14 @@ public:
 	{
 		return nullptr;
 	}
-
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
 
 	//Constructors:
 	List()
@@ -409,6 +426,7 @@ void main()
 	List list1 = { 4, 6, 9, 15, 25 };
 	List list2 = {34, 55, 89};
 	List list3 = list1 + list2;
+	//List list4 = list3 - list2;
 	//List list2 = { 32, 37, 43, 49, 55 };
 	//List list3 = list1 + list2;
 	//list.print();
@@ -416,6 +434,7 @@ void main()
 	for (int i : list1)cout << i << tab; cout << endl;
 	for (int i : list2)cout << i << tab; cout << endl;
 	for (int i : list3)cout << i << tab; cout << endl;
+	//for (int i : list4)cout << i << tab; cout << endl;
 	/*for (List::ReverseIterator it = list3.rbegin(); it != list3.rend(); it++)
 	{
 		cout << *it << tab;
