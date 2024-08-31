@@ -169,6 +169,16 @@ public:
 			return Temp->Data;
 		}
 	};
+	class ReverseIterator: public ConstReverseIterator 
+	{ 
+	public:
+		ReverseIterator(Element* Temp = nullptr): ConstReverseIterator(Temp){}
+		~ReverseIterator() {}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+	};
 	ConstIterator begin()const
 	{
 		return Head;
@@ -177,11 +187,11 @@ public:
 	{
 		return nullptr;
 	}
-	ConstReverseIterator rbegin()
+	ConstReverseIterator rbegin()const
 	{
 		return Tail;
 	}
-	ConstReverseIterator rend()
+	ConstReverseIterator rend()const
 	{
 		return nullptr;
 	}
@@ -190,6 +200,14 @@ public:
 		return Head;
 	}
 	Iterator end()
+	{
+		return nullptr;
+	}
+	ReverseIterator rbegin()
+	{
+		return Tail;
+	}
+	ReverseIterator rend()
 	{
 		return nullptr;
 	}
@@ -400,6 +418,11 @@ List operator+(const List& left, const List& right)
 	}
 	return buffer;
 }
+void Grow(List& list)
+{
+	for (List::Iterator it = list.begin(); it != list.end(); ++it)
+		*it *= 10;
+}
 
 //#define BASE_CHECK
 
@@ -423,7 +446,7 @@ void main()
 #endif // BASE_CHECK
 
 	//List list = { 3, 5, 8, 13, 21 };
-	List list1 = { 4, 6, 9, 15, 25 };
+	List list1 = { 3, 5, 8, 13, 21 };
 	List list2 = {34, 55, 89};
 	List list3 = list1 + list2;
 	//List list4 = list3 - list2;
@@ -433,6 +456,8 @@ void main()
 	//list.reverse_print();
 	for (int i : list1)cout << i << tab; cout << endl;
 	for (int i : list2)cout << i << tab; cout << endl;
+	for (int i : list3)cout << i << tab; cout << endl;
+	Grow(list3);
 	for (int i : list3)cout << i << tab; cout << endl;
 	//for (int i : list4)cout << i << tab; cout << endl;
 	/*for (List::ReverseIterator it = list3.rbegin(); it != list3.rend(); it++)
