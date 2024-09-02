@@ -15,7 +15,7 @@ template<typename T> class List
 			Element* pNext;
 			Element* pPrev;
 		public:
-			Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev)
+			Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev)
 			{
 				cout << "EConstructor:\t" << this << endl;
 			}
@@ -131,7 +131,7 @@ template<typename T> class List
 				ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext; 
 				return *this;
 			}
-			ConstReverseIterator& operator--(int)
+			ConstReverseIterator operator--(int)
 			{
 				ConstReverseIterator old = *this;
 				ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
@@ -221,7 +221,7 @@ template<typename T> class List
 		}
 		List(const std::initializer_list<T>& il) : List()
 		{
-			for (T const* it = il.begin(); it != il.end(); it++)
+			for (T const* it = il.begin(); it != il.end(); ++it)
 			{
 				push_back(*it);
 			}
@@ -261,7 +261,7 @@ template<typename T> class List
 				New->pNext = Head;
 				Head->pPrev = New;
 				Head = New;*/
-				Head = new Element(Data, Head);
+				Head = Head->pPrev = new Element(Data, Head);
 			}
 			size++;
 		}
@@ -311,6 +311,7 @@ template<typename T> class List
 					<< Temp->pNext << endl;
 			}
 			cout << "Head:\t" << Head << endl;
+			cout << "Количество элементов списка: " << size << endl;
 			cout << delimiter << endl;
 		}
 
@@ -427,6 +428,8 @@ template<typename T> class List
 	
 
 //#define BASE_CHECK
+//#define BASE_CHECK_INT 
+
 
 void main()
 {
@@ -447,10 +450,11 @@ void main()
 	list.reverse_ptint();
 #endif // BASE_CHECK
 
+#ifdef BASE_CHECK_INT
 	//List list = { 3, 5, 8, 13, 21 };
 	List<int> list1 = { 3, 5, 8, 13, 21 };
-	List<int> list2 = {34, 55, 89}; 
-	List<int> list3 = list1 + list2; 
+	List<int> list2 = { 34, 55, 89 };
+	List<int> list3 = list1 + list2;
 	//List list4 = list3 - list2;
 	//List list2 = { 32, 37, 43, 49, 55 };
 	//List list3 = list1 + list2;
@@ -467,6 +471,30 @@ void main()
 		cout << *it << tab;
 	}
 	cout << endl;*/
-	/*ist3.print();
+	/*list3.print();
 	list3.reverse_print();*/
+#endif // BASE_CHECK_INT
+
+	List<double> list1 = { 2.4, 5.7, 11.3, 15.9 };
+	for (double i : list1)cout << i << tab; cout << endl;
+	for (List<double>::Iterator it = list1.begin(); it != list1.end(); it++)
+	{
+		cout << *it << tab;
+	}
+	for (List<double>::ReverseIterator it = list1.rbegin(); it != list1.rend(); it++)
+	{
+		cout << *it << tab;
+	}
+	list1.print();
+	
+	List<std::string> list2 = { "Красота", "-", "это", "бесконечность,", "выраженная", "в", "законченной", "форме"};
+	for (std::string i : list2)cout << i << tab; cout << endl;
+	for (List<std::string>::Iterator it = list2.begin(); it != list2.end(); it++)
+	{
+		cout << *it << tab;
+	}
+	for (List<std::string>::ReverseIterator it = list2.rbegin(); it != list2.rend(); it++)
+	{
+		cout << *it << tab;
+	}
 }
