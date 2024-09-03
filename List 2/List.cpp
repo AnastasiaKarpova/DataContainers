@@ -30,122 +30,90 @@ const T& List<T>::ConstBaseIterator::operator*() const
 	return Temp->Data;
 }
 
-template<typename T>
-List<T>::ConstIterator& List<T>::ConstIterator:: operator++()
+template<typename T>typename List<T>::ConstIterator& List<T>::ConstIterator:: operator++()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return *this;
 }
-
-template<typename T>
-List<T>::ConstIterator List<T>::ConstIterator:: operator++(int)
+template<typename T>typename List<T>::ConstIterator List<T>::ConstIterator:: operator++(int)
 {
 	ConstIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return old;
 }
-
-template<typename T>
-List<T>::ConstIterator& List<T>::ConstIterator:: operator--()
+template<typename T>typename List<T>::ConstIterator& List<T>::ConstIterator:: operator--()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return *this;
 }
-
-template<typename T>
-List<T>::ConstIterator List<T>::ConstIterator::operator--(int)
+template<typename T>typename List<T>::ConstIterator List<T>::ConstIterator::operator--(int)
 {
 	ConstIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return old;
 }
 
-template<typename T>
-List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator++()
+template<typename T>typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator++()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return *this;
 }
-
-template<typename T>
-List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator++(int)
+template<typename T>typename List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator++(int)
 {
 	ConstReverseIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 	return old;
 }
-
-template<typename T>
-List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator--()
+template<typename T>typename List<T>::ConstReverseIterator& List<T>::ConstReverseIterator::operator--()
 {
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return *this;
 }
-
-template<typename T>
-List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator--(int)
+template<typename T>typename List<T>::ConstReverseIterator List<T>::ConstReverseIterator::operator--(int)
 {
 	ConstReverseIterator old = *this;
 	ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 	return old;
 }
 
-template<typename T>
-T& List<T>::Iterator::operator*()
+template<typename T>T& List<T>::Iterator::operator*()
+{
+	return ConstBaseIterator::Temp->Data;
+}
+template<typename T>T& List<T>::ReverseIterator::operator*()
 {
 	return ConstBaseIterator::Temp->Data;
 }
 
-template<typename T>
-T& List<T>::ReverseIterator::operator*()
-{
-	return ConstBaseIterator::Temp->Data;
-}
-
-template<typename T>
-List<T>::ConstIterator List<T>::begin() const
+template<typename T>typename List<T>::ConstIterator List<T>::begin() const
 {
 	return Head;
 }
-
-template<typename T>
-List<T>::ConstIterator List<T>::end() const
+template<typename T>typename List<T>::ConstIterator List<T>::end() const
 {
 	return nullptr;
 }
-
-template<typename T>
-List<T>::ConstReverseIterator List<T>::rbegin() const
+template<typename T>typename List<T>::ConstReverseIterator List<T>::rbegin() const
 {
 	return Tail;
 }
-
-template<typename T>
-List<T>::ConstReverseIterator List<T>::rend() const
+template<typename T>typename List<T>::ConstReverseIterator List<T>::rend() const
 {
 	return nullptr;
 }
-
-template<typename T>
-List<T>::Iterator List<T>::begin()
+template<typename T>typename List<T>::Iterator List<T>::begin()
 {
 	return Head;
 }
-
-template<typename T>
-List<T>::Iterator List<T>::end()
+template<typename T>typename List<T>::Iterator List<T>::end()
 {
 	return nullptr;
 }
-
-template<typename T>
-List<T>::ReverseIterator List<T>::rbegin()
+template<typename T>typename List<T>::ReverseIterator List<T>::rbegin()
 {
 	return Tail;
 }
-
-template<typename T>
-List<T>::ReverseIterator List<T>::rend()
+template<typename T>typename List<T>::ReverseIterator List<T>::rend()
 {
 	return nullptr;
 }

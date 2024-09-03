@@ -1,72 +1,83 @@
 #include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define tab "\t"
 
-class Element
+template<typename T>class ForwardList
 {
-protected:
-	int Data; //значение элемента
-	Element* pNext; //указатель на следующий элемент
-	static int count;
-public:
-	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
+	class Element
 	{
-		count++;
+	protected:
+		T Data; //значение элемента
+		Element* pNext; //указатель на следующий элемент
+		static int count;
+	public:
+		Element(T Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
+		{
+			count++;
 #ifdef DEBUG
-		cout << "EConstructor:\t" << this << endl;
+			cout << "EConstructor:\t" << this << endl;
 #endif // DEBUG
-	}
-	~Element()
-	{
-		count--;
+		}
+		~Element()
+		{
+			count--;
 #ifdef DEBUG
-		cout << "EDestructor:\t" << this << endl;
+			cout << "EDestructor:\t" << this << endl;
 #endif // DEBUG
-	}
-	friend class ForwardList;
-	friend class ConstIterator;
-};
-int Element::count = 0;
+		}
+		friend class ForwardList;
+		friend class ConstIterator;
+	} *Head;
+	unsigned int size;
 
-class ConstIterator
-{
-	Element* Temp;
-public:
-	ConstIterator(Element* Temp = nullptr) : Temp(Temp)
-	{
-		cout << "ItConstructor:\t" << this << endl;
-	}
-	~ConstIterator()
-	{
-		cout << "ItDestructor:\t" << this << endl;
-	}
-	ConstIterator& operator++()
-	{
-		Temp = Temp->pNext;
-		return *this;
-	}
-	bool operator!=(const ConstIterator& other)const
-	{
-		return this->Temp != other.Temp;
-	}
+	int Element::count = 0;
 
-	int operator*()
+	class ConstIterator
 	{
-		return Temp->Data;
-	}
-};
+		Element* Temp;
+	public:
+		ConstIterator(Element* Temp = nullptr) : Temp(Temp)
+		{
+			cout << "ItConstructor:\t" << this << endl;
+		}
+		~ConstIterator()
+		{
+			cout << "ItDestructor:\t" << this << endl;
+		}
+		ConstIterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		bool operator!=(const ConstIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
 
-class ForwardList
-{
-	Element* Head;
-	unsigned int size; 
-public:
-	ConstIterator begin()
+		int operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	class Iterator:public ConstIterator
+	{
+	public:
+		Iterator(Element* Temp = nullptr):COnst Iterator(Temp){}
+		~Iterator() {}
+		T& operator*()
+		{
+			return Temp->Data;
+		}
+	};
+	ConstIterator begin()const
 	{
 		return Head;
 	}
-	ConstIterator end()
+	ConstIterator end()const
 	{
 		return nullptr;
 	}
@@ -92,11 +103,11 @@ public:
 		cout << "MoveConstructor: " << this << endl;
 	}
 
-	ForwardList(const std::initializer_list<int>& il):ForwardList()
+	ForwardList(const std::initializer_list<T>& il):ForwardList()
 	{
 		//initializer_list - это контейнер.
 		cout << typeid(il.begin()).name() << endl;
-		for (int const* it = il.begin(); it != il.end(); it++)
+		for (T const* it = il.begin(); it != il.end(); it++)
 		{
 			push_back(*it);
 		}
@@ -243,7 +254,7 @@ public:
 		size--;
 	}
 
-	void insert(int Data, int index)
+	void insert(T Data, int index)
 	{
 		if (index > Head->count)return;
 		if (index == 0) return push_front(Data);
@@ -268,13 +279,13 @@ public:
 		size++;
 	}
 		
-	void erase(int index)
+	void erase(T index)
 	{
 		if (index >= size)return;
 		if (index == 0) return pop_front();
 		//1) Доходим до элемента перед удаляемым:
 		Element* Temp = Head;
-		for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
+		for (T i = 0; i < index - 1; i++) Temp = Temp->pNext;
 		//2) Запоминаем адрес удаляемого элемента:
 		Element* erased = Temp->pNext;
 		//3) Исключаем удаляемый элемент из списка:
@@ -318,7 +329,7 @@ public:
 	
 };
 
-void Print(int arr[])
+template <typename T>void Print(T arr[])
 {
 	/*for (int i : arr)
 	{
@@ -327,7 +338,7 @@ void Print(int arr[])
 	cout << endl;*/
 	cout << typeid(arr).name() << endl;
 	cout << sizeof(arr) << endl;
-	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	for (T i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
 	{
 		cout << arr[i] << tab;
 	}
@@ -431,7 +442,7 @@ void main()
 #endif // RANGE_BASED_FOR_ARRAY 
 
 #ifdef RANGE_BASED_FOR_LIST
-	ForwardList list = { 3, 5, 8, 13, 21 };
+	ForwardList<int> list = { 3, 5, 8, 13, 21 };
 	//list.print();
 
 	for (int i : list)
