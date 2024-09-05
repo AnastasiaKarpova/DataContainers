@@ -5,6 +5,7 @@
 #define tab "\t"
 #define delimiter "\n------------------------------------\n"
 
+
 //#define BASE_CHECK
 //#define BASE_CHECK_INT 
 
