@@ -311,9 +311,3 @@ template<typename T>void List<T>::erase(int index)
 	size--;
 }
 
-
-template<typename T>void Grow(List<T>& list)
-{
-	for (typename List<T>::Iterator it = list.begin(); it != list.end(); ++it)
-		*it *= 10;
-}
