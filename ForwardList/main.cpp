@@ -26,6 +26,7 @@ public:
 	}
 	friend class ForwardList;
 	friend class ConstIterator;
+	friend class Stack;
 };
 int Element::count = 0;
 
@@ -35,7 +36,10 @@ class ConstIterator
 public:
 	ConstIterator(Element* Temp = nullptr) : Temp(Temp)
 	{
+#ifdef DEBUG
 		cout << "ItConstructor:\t" << this << endl;
+#endif //DEBUG
+
 	}
 	~ConstIterator()
 	{
@@ -59,6 +63,7 @@ public:
 
 class ForwardList
 {
+protected:
 	Element* Head;
 	unsigned int size; 
 public:
@@ -318,6 +323,56 @@ public:
 	
 };
 
+class Stack :ForwardList 
+{
+public:
+	const int& top()const
+	{
+		return Head->Data;
+	}
+	int& top() // позволяет изменить вершину стека
+	{
+		return Head->Data;
+	}
+	int push(int Data)
+	{
+		push_front(Data);
+		return Head->Data;
+	}
+	int pop()
+	{
+		int Data = Head->Data;
+		pop_front();
+		return Data;
+	}
+	int size()const
+	{
+		return ForwardList::size;
+	}
+	bool empty()const
+	{
+		return Head == nullptr;
+	}
+	void swap(Stack& other)
+	{
+		Element* bufferHead = this->Head;
+		this->Head = other.Head;
+		other.Head = bufferHead;
+
+		int bufferSize = this->size();
+		this->ForwardList::size = other.size();
+		other.ForwardList::size = bufferSize;
+	}
+	void info()const
+	{
+		cout << "\n-------------------------------\n";
+		cout << this << ":\n";
+		cout << "Size: " << size() << endl;
+		for (int i : ForwardList(*this))cout << i << tab; cout << endl;
+		cout << "\n-------------------------------\n";
+	}
+};
+
 void Print(int arr[])
 {
 	/*for (int i : arr)
@@ -338,7 +393,7 @@ void Print(int arr[])
 //#define COUNT_CHECK;
 //#define PERFORMANCE_CHECK;
 //#define RANGE_BASED_FOR_ARRAY;
-#define RANGE_BASED_FOR_LIST;
+//#define RANGE_BASED_FOR_LIST;
 
 void main()
 {
@@ -440,5 +495,32 @@ void main()
 	}
 	cout << endl;
 #endif // RANGE_BASED_FOR_LIST
+
+	Stack stack;
+	stack.push(3);
+	stack.push(5);
+	stack.push(8);
+	stack.push(13);
+	stack.push(21);
+	cout << stack.size() << endl;
+	
+	/*while (!stack.empty())
+	{
+		cout << stack.pop() << tab;
+	}
+	cout << endl;*/
+
+	Stack stack2;
+	stack2.push(34);
+	stack2.push(55);
+	stack2.push(89);
+	
+	stack.info();
+	stack2.info();
+
+	stack.swap(stack2);
+
+	stack.info();
+	stack2.info();
 
 }
