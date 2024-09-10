@@ -8,6 +8,146 @@
 //#define RANGE_BASED_FOR_ARRAY
 #define RANGE_BASED_FOR_LIST
 
+	//void insert(int index, int Data) //вставляет значение в список по указанному индексу
+	//{
+	//	Element* Temp = Head;
+	//	for (int i = 0; i < index; i++)
+	//	{
+	//		Temp = Temp->pNext; 
+	//	}
+	//	Element* New = new Element(Data);
+	//	
+	//}
+
+	//void erase(int index) //удаляет элемент из списка по указанному индексу
+	//{
+	//
+	//}
+
+	//Removing elements:
+	void pop_front()
+	{
+		if (Head == nullptr)return;
+		Element* erased = Head; //1) Запоминаем адрес удаляемого элемента
+		Head = Head->pNext; //2)Смещаем Голову на следующий элемент (исключаем элемент из списка)
+		delete erased; //3)Удаляем элемент из памяти
+		size--;
+	}
+
+	void pop_back()
+	{
+		//1) Доходим до предпоследного элемента списка:
+		Element* Temp = Head;
+		while (Temp->pNext->pNext)
+		{
+			Temp = Temp->pNext; 
+		}
+		//2) Удаляем последний элемент из памяти:
+
+		delete Temp->pNext;
+
+		//3) Зануляем указатель на последний элемент
+		Temp->pNext = nullptr;
+		size--;
+	}
+
+	void insert(int Data, int index)
+	{
+		if (index > Head->count)return;
+		if (index == 0) return push_front(Data);
+		//1) Доходим до нужного элемента:
+		Element* Temp = Head;
+		for (int i = 0; i < index-1; i++)
+		{
+			Temp = Temp->pNext;
+		}
+
+		//// 2) Создаем новый элемент
+		//Element* New = new Element(Data);
+		//// 3) Включаем элемент в список:
+		//while (Temp)
+		//{
+		//	New->pNext = Temp->pNext;
+		//	Temp->pNext = New;
+		//}
+
+		Temp->pNext = new Element(Data, Temp->pNext);
+		 
+		size++;
+	}
+		
+	void erase(int index)
+	{
+		if (index >= size)return;
+		if (index == 0) return pop_front();
+		//1) Доходим до элемента перед удаляемым:
+		Element* Temp = Head;
+		for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
+		//2) Запоминаем адрес удаляемого элемента:
+		Element* erased = Temp->pNext;
+		//3) Исключаем удаляемый элемент из списка:
+		Temp->pNext = Temp->pNext->pNext;
+		//4) Удаляем элемент из памяти:
+		delete erased;
+		size--;
+	}
+
+	// Methods:
+
+	void reverse()
+	{
+		ForwardList buffer;
+		while (Head)
+		{
+			buffer.push_front(Head->Data);
+			pop_front();
+		}
+		this->Head = buffer.Head;
+		this->size = buffer.size;
+		buffer.Head = nullptr;
+	}
+
+	void print()const
+	{
+		cout << "Head:\t" << Head << endl;
+		//Element* Temp = Head;  //Temp - это итератор
+		////Итератор - это указатель, при помощи которого можно перебирать элементы структуры данных
+		//while (Temp)
+		//{
+		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		//	Temp = Temp->pNext; //Переход на следующий элемент
+		//}
+		for(Element* Temp = Head; Temp; Temp = Temp->pNext)
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		cout << "Количество элементов списка: " << size << endl;
+		//cout << "Общее количество элементов списка: " << Head->count << endl;
+		cout << "Общее количество элементов списка: " << Element::count << endl;
+	}
+	
+};
+
+void Print(int arr[])
+{
+	/*for (int i : arr)
+	{
+		cout << i << tab;
+	}
+	cout << endl;*/
+	cout << typeid(arr).name() << endl;
+	cout << sizeof(arr) << endl;
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << tab;
+	}
+	cout << endl;
+}
+
+//#define BASE_CHECK;
+//#define COUNT_CHECK;
+//#define PERFORMANCE_CHECK;
+//#define RANGE_BASED_FOR_ARRAY;
+#define RANGE_BASED_FOR_LIST;
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -39,7 +179,7 @@ void main()
 	list.erase(index);
 	list.print();
 	//Element element(5);
-#endif //BASE_CHECK
+#endif //BASE_CHECK 
 
 #ifdef COUNT_CHECK 
 	ForwardList list1;
