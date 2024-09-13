@@ -9,6 +9,7 @@ using std::endl;
 
 class List
 {
+//protected:
 	class Element
 	{
 		int Data;
@@ -24,6 +25,7 @@ class List
 			cout << "EDestructor:\t" << this << endl;
 		}
 		friend class List;
+		friend class Queue;
 	}*Head, *Tail;
 	size_t size;
 	class ConstBaseIterator
@@ -406,6 +408,7 @@ public:
 		delete Temp;
 		size--;
 	}
+	friend class Queue;
 };
 
 List operator+(const List& left, const List& right)
@@ -424,7 +427,33 @@ void Grow(List& list)
 		*it *= 10;
 }
 
+class Queue :List
+{
+public:
+	int push(int Data)
+	{
+		push_back(Data);
+		//return Head->Data;
+	}
+	int pop()
+	{
+		int Data = Head->Data;
+		pop_front();
+		return Data;
+	}
+	int size()const
+	{
+		return List::size;
+	}
+	bool empty()const
+	{
+		return Head == nullptr;
+	}
+
+};
+
 //#define BASE_CHECK
+//#define DEBUG
 
 void main()
 {
@@ -445,9 +474,10 @@ void main()
 	list.reverse_ptint();
 #endif // BASE_CHECK
 
+#ifdef DEBUG
 	//List list = { 3, 5, 8, 13, 21 };
 	List list1 = { 3, 5, 8, 13, 21 };
-	List list2 = {34, 55, 89};
+	List list2 = { 34, 55, 89 };
 	List list3 = list1 + list2;
 	//List list4 = list3 - list2;
 	//List list2 = { 32, 37, 43, 49, 55 };
@@ -467,4 +497,18 @@ void main()
 	cout << endl;*/
 	/*ist3.print();
 	list3.reverse_print();*/
+#endif // DEBUG
+
+	Queue queue;
+	queue.push(3);
+	queue.push(5);
+	queue.push(8);
+	queue.push(13);
+	queue.push(21);
+	
+	while (!queue.empty())
+	{
+		cout << queue.pop() << tab;
+	}
+	cout << endl;
 }
