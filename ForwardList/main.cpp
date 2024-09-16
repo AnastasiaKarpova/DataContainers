@@ -365,11 +365,11 @@ public:
 	}
 	void info()const
 	{
-		cout << "\n-------------------------------\n";
+		cout << "\n--------------------------------\n";
 		cout << this << ":\n";
 		cout << "Size: " << size() << endl;
 		for (int i : ForwardList(*this))cout << i << tab; cout << endl;
-		cout << "\n-------------------------------\n";
+		cout << "\n--------------------------------\n";
 	}
 };
 
