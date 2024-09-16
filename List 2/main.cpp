@@ -9,8 +9,7 @@ using std::endl;
 
 class List
 {
-//protected:
-	class Element
+    class Element
 	{
 		int Data;
 		Element* pNext;
